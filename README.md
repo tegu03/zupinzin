@@ -1,4 +1,4 @@
-# PTE/MSE Trading Bot — Python murni (tanpa n8n)
+# PTE/MSE Trading Bot — Python
 
 Bot keputusan trading BTC yang menjalankan **MSE** (klasifikasi rezim) + **PTE** (konfluensi 7-lapis)
 lewat DeepSeek, menyaring tiap trade dengan **Risk Governor deterministik**, mengeksekusi di **Lighter
