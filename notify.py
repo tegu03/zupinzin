@@ -148,4 +148,4 @@ def format_guardian(actions, phase=""):
 
 def format_online():
     mode = "🧪 DRY-RUN" if CONFIG.dry_run else "🔴 LIVE testnet"
-    return f"🤖 <b>PTE Bot ONLINE</b> · {mode} · loop tiap {CONFIG.loop_minutes} menit"
+    return f"🤖 <b>Zupin Bot ONLINE</b> · {mode} · loop tiap {CONFIG.loop_minutes} menit"
