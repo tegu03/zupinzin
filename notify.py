@@ -68,7 +68,7 @@ def _short(h):
 def _header(account):
     a = account
     return "\n".join([
-        "🤖 <b>PTE Bot</b> · BTC Perp <i>(Lighter Testnet)</i>",
+        "🤖 <b>Zupin Bot</b> · BTC Perp <i>(Lighter Testnet)</i>",
         "",
         "💰 <b>Modal &amp; PnL</b>",
         f"• Equity: <b>${_f(a.get('equity_usd'))}</b>  (awal ${_f(a.get('base_capital_usd'))})",
