@@ -119,18 +119,17 @@ def format_trade(decision, account, exec_result):
 
 
 def format_notrade(decision, account):
-    d, a = decision, account
+    d = decision
     reasons = d.get("reasons", [])
     first = _esc(reasons[0]) if reasons else "-"
     waiting = _esc(d.get("flip_if") or d.get("abstain_reason") or "-")
     icon = "🚫" if "kill switch" in " ".join(reasons).lower() else "⏸️"
 
-    lines = [
-        f"🤖 <b>PTE Bot</b> · BTC · Equity ${_f(a.get('equity_usd'))} "
-        f"({_dot(a.get('daily_pnl_pct'))} {_sgn(a.get('daily_pnl_pct'))}% hari ini)",
-        f"{icon} <b>NO-TRADE</b> · sinyal {_esc(d.get('signal'))} · conf {d.get('confidence_pct')}%",
-        f"• {first}",
-    ]
+    # Full Modal & PnL block on every cycle (so the account is always visible),
+    # then a concise no-trade reason so it doesn't get verbose again.
+    lines = [_header(account), "",
+             f"{icon} <b>NO-TRADE</b> · sinyal {_esc(d.get('signal'))} · conf {d.get('confidence_pct')}%",
+             f"• {first}"]
     if waiting and waiting != "-":
         lines.append(f"• Menunggu: {waiting}")
     return "\n".join(lines)
