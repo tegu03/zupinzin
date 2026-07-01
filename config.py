@@ -30,6 +30,12 @@ class Config:
     initial_capital: float = _f("INITIAL_CAPITAL", "1000")
     mkt_slippage: float = _f("MKT_SLIPPAGE", "0.005")
     place_sl_tp: bool = _b("PLACE_SL_TP", "true")
+    # --- SL/TP protection guarantee ---
+    protect_max_retries: int = _i("PROTECT_MAX_RETRIES", "4")           # immediate retries per protection attempt
+    protect_retry_backoff_sec: float = _f("PROTECT_RETRY_BACKOFF_SEC", "3")
+    guardian_enabled: bool = _b("GUARDIAN_ENABLED", "true")             # per-cycle sweep for naked positions
+    guardian_stop_pct: float = _f("GUARDIAN_STOP_PCT", "0.01")          # emergency stop distance for positions with no known plan
+    emergency_close_if_unprotected: bool = _b("EMERGENCY_CLOSE_IF_UNPROTECTED", "true")  # if SL/TP truly cannot be placed, flatten instead of running naked
 
     # --- Telegram ---
     telegram_token: str = os.getenv("TELEGRAM_BOT_TOKEN", "")
