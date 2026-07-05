@@ -337,6 +337,29 @@ class Exchange:
             actions.append({"market": mi, "status": "PROTECTED" if res.get("ok") else "STILL_NAKED", **res})
         return actions
 
+    # ---- sleep-mode helper: are ALL open positions protected right now? ----
+    async def all_positions_protected(self, account):
+        """True only if every open position has a live reduce-only trigger (SL/TP).
+        Used to decide it is safe to sleep the AI loop. Read-only exchange calls.
+        In dry_run (or without a signer) we cannot query live orders, so we treat
+        positions as 'protected' — nothing real is at stake there."""
+        positions = account.get("positions", [])
+        if not positions:
+            return False
+        if self.signer is None or CONFIG.dry_run:
+            return True
+        for pos in positions:
+            mi = pos.get("market")
+            if mi is None:
+                return False
+            try:
+                orders = await self._active_orders(mi)
+            except Exception:
+                return False  # can't verify -> don't sleep
+            if not self._has_protective(orders):
+                return False
+        return True
+
     # ---- execution (entry, then guaranteed protection) ----
     async def execute(self, decision):
         out = {"ok": False, "dry_run": decision["dry_run"], "side": decision["side"],
