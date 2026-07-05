@@ -37,6 +37,12 @@ class Config:
     guardian_stop_pct: float = _f("GUARDIAN_STOP_PCT", "0.01")          # emergency stop distance for positions with no known plan
     emergency_close_if_unprotected: bool = _b("EMERGENCY_CLOSE_IF_UNPROTECTED", "true")  # if SL/TP truly cannot be placed, flatten instead of running naked
 
+    # --- SLEEP MODE (token saver: skip AI while a protected trade is live) ---
+    sleep_when_positioned: bool = _b("SLEEP_WHEN_POSITIONED", "true")    # pause AI loop while a position is open
+    sleep_poll_sec: int = _i("SLEEP_POLL_SEC", "30")                    # how often to check if SL/TP was hit (exchange read, no AI)
+    guardian_interval_sec: int = _i("GUARDIAN_INTERVAL_SEC", "300")     # guardian re-check cadence while sleeping (5 min)
+    sleep_pnl_notify_sec: int = _i("SLEEP_PNL_NOTIFY_SEC", "3600")      # periodic running-PnL Telegram while sleeping (0 = off)
+
     # --- Telegram ---
     telegram_token: str = os.getenv("TELEGRAM_BOT_TOKEN", "")
     telegram_chat_id: str = os.getenv("TELEGRAM_CHAT_ID", "")
