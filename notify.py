@@ -149,3 +149,30 @@ def format_guardian(actions, phase=""):
 def format_online():
     mode = "🧪 DRY-RUN" if CONFIG.dry_run else "🔴 LIVE testnet"
     return f"🤖 <b>Zupin Bot ONLINE</b> · {mode} · loop tiap {CONFIG.loop_minutes} menit"
+
+
+# ---- SLEEP MODE (posisi terbuka & terproteksi -> AI dijeda untuk hemat token) ----
+def format_sleep_enter(account, protected=True):
+    prot = "🛡️ SL/TP terverifikasi (OCO)" if protected else "⚠️ proteksi belum terverifikasi (guardian aktif)"
+    poll = CONFIG.sleep_poll_sec
+    return "\n".join([
+        _header(account), "",
+        "💤 <b>SLEEP MODE</b> — posisi aktif, AI dijeda (hemat token).",
+        f"• {prot}",
+        f"• Memantau posisi tiap {poll}s · guardian tiap {CONFIG.guardian_interval_sec // 60} menit.",
+        "• Bot akan bangun & cari sinyal lagi saat SL/TP tersentuh.",
+    ])
+
+
+def format_sleep_pnl(account):
+    return "\n".join([
+        _header(account), "",
+        "💤 <b>Masih menunggu SL/TP…</b> — posisi belum tertutup.",
+    ])
+
+
+def format_position_closed(account):
+    return "\n".join([
+        _header(account), "",
+        "✅ <b>Posisi tertutup</b> (SL/TP tersentuh) — bot kembali mencari sinyal.",
+    ])
